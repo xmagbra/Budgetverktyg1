@@ -1,0 +1,8 @@
+{
+  "servers": {
+    "Neon": {
+      "type": "http",
+      "url": "https://mcp.neon.tech/mcp?projectId=wandering-union-02557175"
+    }
+  }
+}
