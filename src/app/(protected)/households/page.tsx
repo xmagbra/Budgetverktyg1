@@ -22,8 +22,8 @@ export default async function HouseholdsPage() {
       <p className="text-sm font-semibold text-[var(--accent)]">DELADE SAMMANSTÄLLNINGAR</p>
       <h1 className="mt-2 text-3xl font-semibold tracking-tight">Hushåll</h1>
       <p className="mt-3 max-w-2xl text-sm leading-6 text-[var(--muted)]">
-        Endast hushåll du tillhör visas här. Ekonomiska uppgifter delas inte
-        automatiskt.
+        Endast hushåll du tillhör visas här. Ekonomiska uppgifter delas med
+        medlemmarna i respektive hushåll.
       </p>
       <section className="mt-8 grid gap-6 lg:grid-cols-[1fr_0.8fr]">
         <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6">

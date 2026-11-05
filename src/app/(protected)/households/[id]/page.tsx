@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import Link from "next/link";
 import { and, eq } from "drizzle-orm";
 import {
   AddHouseholdMemberForm,
@@ -55,6 +56,14 @@ export default async function HouseholdDetailPage({
     <>
       <p className="text-sm font-semibold text-[var(--accent)]">HUSHÅLL</p>
       <h1 className="mt-2 text-3xl font-semibold tracking-tight">{household.name}</h1>
+      {currentMembership && (
+        <Link
+          href={`/households/${id}/finance`}
+          className="mt-4 inline-flex rounded-xl bg-[var(--accent)] px-4 py-3 text-sm font-semibold text-white"
+        >
+          Öppna hushållsekonomi
+        </Link>
+      )}
       <section className="mt-8 grid gap-6 lg:grid-cols-[1fr_0.8fr]">
         <div className="rounded-2xl border border-[var(--line)] bg-[var(--surface)] p-6">
           <h2 className="text-lg font-semibold">Medlemmar</h2>

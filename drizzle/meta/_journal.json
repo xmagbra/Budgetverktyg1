@@ -15,6 +15,13 @@
       "when": 1793739600254,
       "tag": "0001_giant_william_stryker",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1793917668465,
+      "tag": "0002_left_rictor",
+      "breakpoints": true
     }
   ]
 }

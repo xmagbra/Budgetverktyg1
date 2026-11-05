@@ -8,6 +8,8 @@ affärslogik. Klienten får aldrig en databasanslutning eller serverhemlighet.
 - `src/app`: App Router-sidor, route handlers och server actions.
 - `src/components`: UI-komponenter och formulär.
 - `src/db`: Drizzle-schema och server-only Neon-anslutning.
+- `src/lib/finance.ts`: exakt penninghantering, ränteperiodisering och
+  lånesimulering.
 - `src/lib/auth`: Better Auth-konfiguration, session guards och policyer.
 - `audit_logs`: server-side logg över relevanta konto- och hushållshändelser,
   utan lösenord, sessionstoken eller inbjudningstoken.
@@ -36,7 +38,9 @@ länken privat.
 
 Drizzle använder Neon HTTP-driver för korta, serverless-frågor. Migrationsfiler
 genereras från schema och granskas innan de körs. Ändringar appliceras inte
-automatiskt vid appstart.
+automatiskt vid appstart. Ekonomidata är hushållsägd; medlemskap verifieras på
+servern före varje läsning och ändring. Överföringar och lånebetalningar hålls
+separata från vanliga inkomst-/utgiftstransaktioner.
 
 ## UI
 
@@ -46,5 +50,5 @@ Ofärdiga ekonomiska funktioner visas inte som aktiva verktyg.
 
 ## Avgränsningar
 
-Inga bankkopplingar, ekonomiska tabeller, transaktioner, analysfunktioner,
-e-posttransport eller extern AI finns i etapp 1.
+Ingen bankkoppling, automatisk betalning, import, budget, analysfunktion,
+e-posttransport eller extern AI finns ännu.

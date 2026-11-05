@@ -15,13 +15,21 @@
 - Databas- och auth-hemligheter är server-only och `.env*` ignoreras av Git.
 - Relevanta konto- och hushållsadministrationshändelser loggas utan lösenord,
   sessionsvärden eller inbjudningstoken.
-- Ingen känslig ekonomisk information loggas; ingen ekonomisk data finns ännu.
+- Ekonomiska vyer och server actions verifierar hushållsmedlemskap; medlemskap
+  i ett annat hushåll ger ingen åtkomst. Överföringar hålls åtskilda från
+  inkomster och utgifter.
+- Ekonomiska belopp och ränteberäkningar använder heltal/BigInt, aldrig
+  flyttal. Låneräntehistorik och uppdelning mellan ränta/amortering bevaras.
+- Hushåll med ekonomiska poster blockeras från radering; ekonomiska poster har
+  inga raderingsflöden i användargränssnittet.
 
 ## Krävs innan produktion
 
 - Skapa stark `BETTER_AUTH_SECRET` och TLS-baserad produktions-URL.
 - Konfigurera Neon med TLS, minsta möjliga databasbehörighet, backup/PITR,
   retention och separat branch per miljö.
+- Tillämpa och verifiera ekonomiska migrationer på rätt Neon-branch före
+  användning; `.env.local` avgör vilken branch CLI-kommandon når.
 - Begränsa Vercel teamåtkomst, skydda production deployments och förvara
   miljövariabler endast server-side.
 - Konfigurera e-postleverantör för automatisk inbjudan/verifiering om det ska
@@ -33,6 +41,9 @@
 ## Kända avgränsningar
 
 - Ingen automatisk e-posttransport eller rate limiting i etapp 1.
+- Ekonomiska poster kan ännu inte redigeras eller arkiveras i gränssnittet.
+  Aktuella lånebetalningar registreras manuellt; simuleringar är prognoser,
+  inte utfästelser om framtida ränta eller betalningsvillkor.
 - Last-admin-kontroller är applikationskontroller; samtidiga adminändringar bör
   senare skyddas med transaktion/låsning och testas mot PostgreSQL.
 - Inbjudan skapar kontot innan acceptansstatus skrivs. Vid avbrott mellan dessa

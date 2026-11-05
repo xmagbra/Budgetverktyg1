@@ -3,7 +3,17 @@
 import { and, eq } from "drizzle-orm";
 import { redirect } from "next/navigation";
 import { db, writeAuditLog } from "@/db";
-import { auditLogs, householdMemberships, households, user } from "@/db/schema";
+import {
+  auditLogs,
+  financeCategories,
+  financeTransactions,
+  financeTransfers,
+  financialAccounts,
+  householdMemberships,
+  households,
+  loans,
+  user,
+} from "@/db/schema";
 import { canManageHousehold } from "@/lib/auth/policy";
 import { requireSession } from "@/lib/auth/session";
 import {
@@ -201,6 +211,24 @@ export async function deleteHouseholdAction(
     .limit(1);
   if (!canManageHousehold(actor.role, actorMembership?.role)) {
     return { error: "Du saknar behörighet att ta bort hushållet." };
+  }
+
+  const financialData = await Promise.all([
+    db.select({ id: financialAccounts.id }).from(financialAccounts)
+      .where(eq(financialAccounts.householdId, householdId)).limit(1),
+    db.select({ id: financeCategories.id }).from(financeCategories)
+      .where(eq(financeCategories.householdId, householdId)).limit(1),
+    db.select({ id: financeTransactions.id }).from(financeTransactions)
+      .where(eq(financeTransactions.householdId, householdId)).limit(1),
+    db.select({ id: financeTransfers.id }).from(financeTransfers)
+      .where(eq(financeTransfers.householdId, householdId)).limit(1),
+    db.select({ id: loans.id }).from(loans)
+      .where(eq(loans.householdId, householdId)).limit(1),
+  ]);
+  if (financialData.some((records) => records.length > 0)) {
+    return {
+      error: "Hushållet kan inte tas bort eftersom det innehåller ekonomiska uppgifter.",
+    };
   }
 
   const audit = db.insert(auditLogs).values({
